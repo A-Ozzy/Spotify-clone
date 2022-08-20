@@ -1,0 +1,70 @@
+@import "../index.scss";
+
+.items {
+   display: grid;
+   grid-template-columns: repeat(auto-fill, 160px);
+   grid-template-rows: 1fr;
+   gap: 0.8rem;
+   cursor: pointer;
+}
+.item {
+   font-size: 0.9rem;
+   margin: 0 auto;
+   :not(:last-child) {
+      margin-bottom: 1rem;
+   }
+   padding: 0.4rem;
+   border-radius: 0.5rem;
+   transition: all ease 0.2s 0s;
+   position: relative;
+   &:hover {
+      background-color: rgba(39, 39, 39, 0.7);
+   }
+   &__img {
+      margin: 0 auto;
+      width: 8.125rem;
+      height: 8.125rem;
+      border-radius: 50%;
+      img {
+         width: 100%;
+         height: 100%;
+         object-fit: cover;
+         border-radius: 50%;
+      }
+   }
+   &__button {
+      position: absolute;
+      bottom: 15%;
+      right: 10%;
+      visibility: hidden;
+      opacity: 0;
+      transition: all ease 0.3s 0s;
+      
+      svg {
+         font-size: 50px;
+         color: rgba(52, 209, 32, 1);
+      }
+   }
+   &__name {
+      line-height: 1.2rem;
+      max-width: 160px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+   }
+   &__type {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.5);
+   }
+}
+
+.item:hover {
+   .item__button {
+      bottom: 20%;
+      visibility: visible;
+      opacity: 1;
+   }
+   .item__img{
+      box-shadow: 0 0 20px #000;
+   }
+}

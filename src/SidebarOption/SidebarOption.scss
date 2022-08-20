@@ -1,0 +1,26 @@
+@import "../index.scss";
+
+.sidebar-option {
+   color: gray;
+   padding: 0.3125rem;
+   cursor: pointer;
+   transition: color ease 0.3s 0s;
+   display: flex;
+   align-items: center;
+   
+   &__text {
+      margin: 0 0 0 0.625rem;
+      p {
+         padding: 0.180rem 0.2rem;
+         display: block;
+         max-width: 180px;
+         font-size: 0.875rem;
+         overflow: hidden;
+         white-space: nowrap;
+         text-overflow: ellipsis;
+      }
+   }
+   &:hover {
+      color: $colorWhite;
+   }
+}

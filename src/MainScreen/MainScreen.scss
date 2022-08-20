@@ -1,0 +1,28 @@
+@import "../index.scss";
+
+.main-screen {
+   min-height: 100vh;
+   display: grid;
+   grid-template-areas:
+      "sidebar content"
+      "footer footer";
+   grid-template-columns: 12.5rem 1fr;
+   grid-template-rows: 1fr 4.35rem;
+}
+.sidebar {
+   background-color: $colorBlack;
+   grid-area: sidebar;
+}
+.content {
+   background: linear-gradient(175deg, rgba(91,218,134,1) 0%, rgba(21,82,154,1) 37%, rgba(34,47,134,1) 63%, rgba(5,8,25,1) 90%);
+   grid-area: content;
+}
+.footer {
+   position: fixed;
+   bottom: 0;
+   left: 0;
+   width: 100vw;
+   background-color: $colorBlack;
+   border-top: 1px solid rgba(122, 121, 121, 0.8);
+   grid-area: footer;
+}

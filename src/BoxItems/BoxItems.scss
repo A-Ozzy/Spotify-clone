@@ -1,0 +1,20 @@
+.boxitems{
+   color: #fff;
+   background-color: rgba(24, 24, 24, 0.7);
+   padding: 2rem;
+   &__title{
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 0px 0px 0.8rem 0px;
+   }
+   &__subtitle{
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: rgba(158, 156, 156, 0.9);
+      margin: 0px 0px 0.8rem 0px;
+   }
+   &__collection{
+      padding: 1.5rem 0;
+   }
+}
+

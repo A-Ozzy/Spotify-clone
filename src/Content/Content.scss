@@ -1,0 +1,21 @@
+.content {
+   position: absolute;
+   top: 0;
+   bottom: 3.9rem;
+   left: 200px;
+   right: 0;
+   overflow: auto;
+   &::-webkit-scrollbar {
+      display: block;
+      width: 0.6rem;
+      background-color: rgba(72, 71, 71, 0.8);
+   }
+   &::-webkit-scrollbar-thumb {
+      background-color: rgba(58, 58, 58, 0.8);
+      -webkit-box-shadow: inset 2px 0 4px rgb(113, 113, 113);
+      box-shadow: inset 2px 0 4px rgb(113, 113, 113);
+   }
+   &::-webkit-scrollbar-track {
+      background-color: rgba(109, 105, 105, 0.8);
+   }
+}
