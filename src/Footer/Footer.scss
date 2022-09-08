@@ -2,17 +2,27 @@
 
 .footer {
    display: grid;
-   grid-template-columns: 15.625rem 2fr 15.625rem;
+   grid-template-columns: 22.5rem 2fr 15.625rem;
+   grid-template-rows: 4.35rem;
+   
    justify-items: start;
    align-items: center;
    padding: 0.2rem 0.5rem;
 }
 .footerleft {
    display: grid;
-   grid-template-columns: 4.375rem 12.5rem 4.375rem;
+   grid-template-columns: 4.375rem 9.375rem 4.375rem;
    align-items: center;
    gap: 0.6rem;
-
+   &__img{
+      width: 4rem;
+      height: 4rem;
+      img{
+         width: 100%;
+         height: 100%;
+         object-fit: contain;
+      }
+   }
    &__info {
       align-self: center;
       font-size: 0.9rem;
@@ -53,31 +63,6 @@
 
 .footercenter {
    justify-self: center;
-   padding: 0.6rem;
-   &__control {
-      max-width: 15.625rem;
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      margin: 0 auto;
-      place-items: center;
-      :nth-child(3) {
-         font-size: 35px;
-      }
-      :not(:last-child) {
-         margin: 0px 0.6rem 0px 0px;
-      }
-      svg {
-         font-size: 1.75rem;
-         color: #fff;
-         cursor: pointer;
-         &:hover {
-            &:not(:nth-child(3)) {
-               color: $colorGreen;
-            }
-            transform: scale(1.2);
-         }
-      }
-   }
 }
 
 .footerright {
@@ -85,25 +70,25 @@
    margin: 0px 0.8rem 0px 0px;
 }
 
-.MuiSlider-root {
-   color: rgb(238, 238, 238) !important;
-}
-.MuiSlider-rail {
-   height: 0.25rem !important;
-}
-.MuiSlider-track {
-   height: 0.25rem !important;
-}
+// .MuiSlider-root {
+//    color: rgb(238, 238, 238) !important;
+// }
+// .MuiSlider-rail {
+//    height: 0.25rem !important;
+// }
+// .MuiSlider-track {
+//    height: 0.25rem !important;
+// }
 
-.MuiSlider-thumb {
-   display: none !important;
-}
+// .MuiSlider-thumb {
+//    display: none !important;
+// }
 
 @keyframes move-text {
    0% {
       left: 0;
    }
    100% {
-      transform: translateX(calc(-100% + 11.25rem));
+      transform: translateX(calc(-100% + 9rem));
    }
 }

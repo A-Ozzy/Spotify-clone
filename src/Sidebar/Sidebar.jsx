@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserPlaylists } from '../store/playlistSlice';
 import SidebarOption from '../SidebarOption';
+import { Link } from "react-router-dom";
 
 import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
@@ -20,7 +21,7 @@ const Sidebar = () => {
    useEffect(() => {
 
       dispatch(fetchUserPlaylists(token));
-      
+
    }, [token, dispatch]);
 
    return (
@@ -38,9 +39,14 @@ const Sidebar = () => {
          <div className="sidebar__playlists">
             <ul className="playlist">
                {playlist?.map(({ name, id }) => {
+                  // console.log(item);
+                  // const { name, id } = item;
+
                   return (
-                     <li key={id}>
-                        <SidebarOption text={name} />
+                     <li key={id} data-playlist-id={id}>
+                        <Link to={`/playlist/${id}`}>
+                           <SidebarOption text={name} />
+                        </Link>
                      </li>
                   )
                })}

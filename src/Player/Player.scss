@@ -1,0 +1,49 @@
+@import "../index.scss";
+
+.player {
+   &__controls {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+
+      max-width: 15.625rem;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      margin: 0 auto;
+      place-items: center;
+      :nth-child(3) {
+         svg {
+            font-size: 2.2rem;
+         }
+      }
+      :not(:last-child) {
+         svg {
+            margin: 0px 0.6rem 0px 0px;
+         }
+      }
+      svg {
+         font-size: 1.75rem;
+         color: #fff;
+         cursor: pointer;
+         &:hover {
+            transform: scale(1.2);
+            color: rgba(52, 209, 32, 1);
+         }
+      }
+   }
+   &__shuffle{
+      position: relative;
+   }
+   &__repeat{
+      position: relative;
+   }
+}
+.indicator.active{
+   position: absolute;
+   top: -0.5rem;
+   left: 50%;
+   transform: translate(-50%, 0);
+   width: 5px;
+   height: 5px;
+   border-radius: 50%;
+   background-color: rgba(52, 209, 32, 1);
+}

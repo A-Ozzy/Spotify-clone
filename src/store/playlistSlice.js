@@ -3,7 +3,7 @@ import axios from 'axios';
 
 
 export const fetchUserPlaylists = createAsyncThunk(
-   'main/fetchUserPlaylists',
+   'playlist/fetchUserPlaylists',
    async function (token, { rejectWithValue }) {      
       try {
          const response = await axios.get(
@@ -27,7 +27,7 @@ export const fetchUserPlaylists = createAsyncThunk(
 );
 
 export const fetchFollowedArtists = createAsyncThunk(
-   'main/fetchFollowedArtists',
+   'playlist/fetchFollowedArtists',
    async function (token, { rejectWithValue }) {      
       try {
          const response = await axios.get(
@@ -49,31 +49,31 @@ export const fetchFollowedArtists = createAsyncThunk(
    }
 );
 
-export const fetchCurrentlyPlayingTrack = createAsyncThunk(
-   'main/fetchCurrentlyPlayingTrack',
-   async function (token, { rejectWithValue }) {      
-      try {
-         const response = await axios.get(
-            `https://api.spotify.com/v1/me/player/currently-playing`, {
-            headers: {
-               Authorization: `Bearer ${token}`,
-               'Content-Type': "application/json"
-            }
-         });
-         if (!response.status === 200) {
-            throw new Error('Error');
-         }
+// export const fetchCurrentlyPlayingTrack = createAsyncThunk(
+//    'playlist/fetchCurrentlyPlayingTrack',
+//    async function (token, { rejectWithValue }) {      
+//       try {
+//          const response = await axios.get(
+//             `https://api.spotify.com/v1/me/player/currently-playing`, {
+//             headers: {
+//                Authorization: `Bearer ${token}`,
+//                'Content-Type': "application/json"
+//             }
+//          });
+//          if (!response.status === 200) {
+//             throw new Error('Error');
+//          }
          
-         return response.data
+//          return response.data
 
-      } catch (err) {
-         return rejectWithValue(err.message);
-      };
-   }
-);
+//       } catch (err) {
+//          return rejectWithValue(err.message);
+//       };
+//    }
+// );
 
 export const fetchTopArtists = createAsyncThunk(
-   'main/fetchTopArtists',
+   'playlist/fetchTopArtists',
    async function (token, { rejectWithValue }) {      
       try {
          const response = await axios.get(
@@ -115,20 +115,23 @@ const playlistSlice = createSlice({
       [fetchFollowedArtists.fulfilled]: (state, action) => {
          state.followedArtists = action.payload;
       },
-      [fetchCurrentlyPlayingTrack.fulfilled]: (state, action) => {   
-         const { progress_ms } = action.payload;
+      // [fetchCurrentlyPlayingTrack.fulfilled]: (state, action) => {   
+      //    // console.log(action.payload);
          
-         const { id, name, duration_ms, artists, album } = action.payload.item;
+      //    const { progress_ms } = action.payload;
          
-         state.currentlyPlayingTrack = {
-            id,
-            songName: name,
-            artists: artists[0].name,
-            songImg: album.images[2].url,
-            duration: duration_ms,
-            playingTrackPosition: progress_ms,
-         };
-      },
+      //    const { id, name, duration_ms, artists, album, uri} = action.payload.item;
+         
+      //    state.currentlyPlayingTrack = {
+      //       id,
+      //       songName: name,
+      //       artists: artists[0].name,
+      //       songImg: album.images[2].url,
+      //       duration: duration_ms,
+      //       playingTrackPosition: progress_ms,
+      //       uri,
+      //    };
+      // },
       [fetchTopArtists.fulfilled]: (state, action) => {  
          state.topArtists = action.payload;
       },
