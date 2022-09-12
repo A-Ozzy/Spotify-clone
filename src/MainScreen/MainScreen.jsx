@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { Outlet } from "react-router-dom";
 import Sidebar from '../Sidebar';
-import Content from '../Content';
 import Footer from '../Footer';
 
 import { fetchUserInfo } from '../store/loginSlice';
@@ -24,7 +23,7 @@ const MainScreen = () => {
    return (
       <div className="main-screen">
          <Sidebar/>
-         <Content/>
+         <Outlet/>
          <Footer/>
       </div>
    );

@@ -37,13 +37,13 @@ const Sidebar = () => {
             <SidebarOption Icon={StarsIcon} text="Favorit tracks" />
          </div>
          <div className="sidebar__playlists">
-            <ul className="playlist">
-               {playlist?.map(({ name, id }) => {
+            <ul className="sidebar__playlist">
+               {playlist?.map((item) => {
                   // console.log(item);
-                  // const { name, id } = item;
+                  const { name, id, uri } = item;
 
                   return (
-                     <li key={id} data-playlist-id={id}>
+                     <li key={id} data-playlist-uri={uri}>
                         <Link to={`/playlist/${id}`}>
                            <SidebarOption text={name} />
                         </Link>

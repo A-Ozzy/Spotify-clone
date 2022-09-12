@@ -49,29 +49,6 @@ export const fetchFollowedArtists = createAsyncThunk(
    }
 );
 
-// export const fetchCurrentlyPlayingTrack = createAsyncThunk(
-//    'playlist/fetchCurrentlyPlayingTrack',
-//    async function (token, { rejectWithValue }) {      
-//       try {
-//          const response = await axios.get(
-//             `https://api.spotify.com/v1/me/player/currently-playing`, {
-//             headers: {
-//                Authorization: `Bearer ${token}`,
-//                'Content-Type': "application/json"
-//             }
-//          });
-//          if (!response.status === 200) {
-//             throw new Error('Error');
-//          }
-         
-//          return response.data
-
-//       } catch (err) {
-//          return rejectWithValue(err.message);
-//       };
-//    }
-// );
-
 export const fetchTopArtists = createAsyncThunk(
    'playlist/fetchTopArtists',
    async function (token, { rejectWithValue }) {      
@@ -115,23 +92,6 @@ const playlistSlice = createSlice({
       [fetchFollowedArtists.fulfilled]: (state, action) => {
          state.followedArtists = action.payload;
       },
-      // [fetchCurrentlyPlayingTrack.fulfilled]: (state, action) => {   
-      //    // console.log(action.payload);
-         
-      //    const { progress_ms } = action.payload;
-         
-      //    const { id, name, duration_ms, artists, album, uri} = action.payload.item;
-         
-      //    state.currentlyPlayingTrack = {
-      //       id,
-      //       songName: name,
-      //       artists: artists[0].name,
-      //       songImg: album.images[2].url,
-      //       duration: duration_ms,
-      //       playingTrackPosition: progress_ms,
-      //       uri,
-      //    };
-      // },
       [fetchTopArtists.fulfilled]: (state, action) => {  
          state.topArtists = action.payload;
       },
