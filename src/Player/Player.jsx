@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
    fetchPlaybackState,
@@ -40,7 +40,7 @@ function Player() {
    };
 
 
-   const InitializePlayer = () => {
+   const InitializePlayer = useCallback(() => {
       // console.log("initializing firey spotify 👾");
       let { Player } = window.Spotify;
       fireyPlayer = new Player({
@@ -64,21 +64,23 @@ function Player() {
       });
       // Playback status updates
       fireyPlayer.addListener("player_state_changed", (state) => {
-         console.log("player_state_changed");
-         // dispatch(fetchPlaybackState(token));         
+         console.log("player_state_changed");         
          try {
             if (state) {
-               const { duration, paused, position, repeat_mode, shuffle, track_window } = state;
+               
+               const { duration, paused, position, repeat_mode, shuffle, track_window, context } = state;
                const { current_track } = track_window;
                dispatch(setPlaybackState({
-               songName: current_track.name,
-               songImg: current_track.album.images[1].url,
-               artists: current_track.artists,
-               play: !paused,
-               repeat: repeat_mode !== 0,
-               shuffle: shuffle,
-               progress: position,
-               duration: duration,
+                  context_uri: context.uri,
+                  songName: current_track.name,
+                  id: current_track.id,
+                  songImg: current_track.album.images[1].url,
+                  artists: current_track.artists,
+                  play: !paused,
+                  repeat: repeat_mode !== 0,
+                  shuffle: shuffle,
+                  progress: position,
+                  duration: duration,
                }));
             }
          } catch (error) {
@@ -96,7 +98,7 @@ function Player() {
       });
       // Connect the player!
       fireyPlayer.connect()
-   };
+   },[]);
 
    const toggleMusic = () => {
       const url = playbackState.play ? `https://api.spotify.com/v1/me/player/pause` : `https://api.spotify.com/v1/me/player/play`;
@@ -110,13 +112,14 @@ function Player() {
    };
 
    const switchShuffle = (action) => {
-      dispatch(toggleShuffle({ action, token}))
+      dispatch(toggleShuffle({ action, token }))
    };
 
-   const switchRepeat = (value) => {
+
+   const switchRepeat = useCallback((value) => {
       const action = value ? "off" : "track";
       dispatch(toggleRepeat({ action, token }));
-   };
+   },[playbackState.repeat]);
 
 
 
@@ -127,15 +130,15 @@ function Player() {
       return () => {
          fireyPlayer.disconnect();
       }
-   }, []);
+   }, [token]);
 
    return (
       <div className="player">
          <div className="player__controls">
             <div className="player__shuffle"
-               onClick={() => switchShuffle(!playbackState.shuffle) }>
+               onClick={() => switchShuffle(!playbackState.shuffle)}>
                <ShuffleIcon />
-               <div className={`indicator ${playbackState.shuffle? "active" : ""} `}></div>
+               <div className={`indicator ${playbackState.shuffle ? "active" : ""} `}></div>
             </div>
             <div className="player__previous"
                onClick={() => switchNextPrevious("previous")}>
@@ -150,9 +153,9 @@ function Player() {
                <SkipNextIcon />
             </div>
             <div className="player__repeat"
-            onClick={() => switchRepeat(playbackState.repeat) }>
+               onClick={() => switchRepeat(playbackState.repeat)}>
                <RepeatIcon />
-               <div className={`indicator ${playbackState.repeat? "active" : ""} `}></div>
+               <div className={`indicator ${playbackState.repeat ? "active" : ""} `}></div>
             </div>
          </div>
          {/* <div className="player__progressbar">

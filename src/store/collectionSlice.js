@@ -55,7 +55,6 @@ const collectionSlice = createSlice({
    name: "collection",
    initialState: {
       name: "",
-      owner: "",
       image: "",
       description: "",
       totalAmount: 0,
@@ -66,10 +65,9 @@ const collectionSlice = createSlice({
    },
    extraReducers: {
       [fetchCollectionTracks.fulfilled]: (state, action) => {
-         console.log(action.payload);
+         // console.log(action.payload);
          
          state.name = action.payload.name;
-         state.owner = action.payload.owner.display_name;
          state.image = action.payload.images[0].url;
          state.totalAmount = action.payload.tracks.total;
          state.items = action.payload.tracks.items;

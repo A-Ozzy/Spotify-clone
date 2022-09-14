@@ -16,56 +16,80 @@ const PlaylistPage = () => {
    const token = useSelector(state => state.login.token);
    const cover = useSelector(state => state.collection.image);
    const name = useSelector(state => state.collection.name);
-   const owner = useSelector(state => state.collection.owner);
    const totalAmount = useSelector(state => state.collection.totalAmount);
    const items = useSelector(state => state.collection.items);
    const description = useSelector(state => state.collection.description);
+   const currentTrackId = useSelector(state => state.player.playbackState.id);
+   const currentCollectionUri = useSelector(state => state.player.playbackState.context_uri);
+   let totalTime = 0;
 
-   // console.log(id);
+
+   function songDuration(duration) {
+      var seconds = parseInt((duration / 1000) % 60),
+         minutes = parseInt((duration / (1000 * 60)) % 60),
+         hours = parseInt((duration / (1000 * 60 * 60)) % 24);
+
+      hours = (hours < 10) ? "0" + hours : hours;
+      minutes = (minutes < 10) ? "0" + minutes : minutes;
+      seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+      // return `${minutes}.${seconds}`;
+      return hours > 0 ? `${hours}.${minutes}.${seconds}` : `${minutes}.${seconds}`;
+   };
+
 
    useEffect(() => {
       const url = `https://api.spotify.com/v1/me/player/play`;
       const uri = `spotify:playlist:${id.split(":").slice(-1)}`;
+      
+      if (uri !== currentCollectionUri) {
+         dispatch(fetchCollection({ url, token, uri }));
 
+      }
 
       dispatch(fetchCollectionTracks({ token, id }));
-      dispatch(fetchCollection({ url, token, uri }));
+      
 
    }, [id]);
 
 
    const playlistItems = items.map((item, i) => {
-      // console.log(item);
-      const { track } = item;
+      
+      const { track } = item;      
       let artists = [];
+      totalTime += track.duration_ms;
+
       const addedAt = item.added_at.split("T");
+      const currentTrackClasses = `${track.id === currentTrackId ? "current" : ""}`;
+   
+      
+      // function songDuration(duration) {
+      //    var seconds = parseInt((duration / 1000) % 60),
+      //       minutes = parseInt((duration / (1000 * 60)) % 60),
+      //       hours = parseInt((duration / (1000 * 60 * 60)) % 24);
 
-      function songDuration(duration) {
-         var seconds = parseInt((duration / 1000) % 60),
-            minutes = parseInt((duration / (1000 * 60)) % 60),
-            hours = parseInt((duration / (1000 * 60 * 60)) % 24);
+      //    hours = (hours < 10) ? "0" + hours : hours;
+      //    minutes = (minutes < 10) ? "0" + minutes : minutes;
+      //    seconds = (seconds < 10) ? "0" + seconds : seconds;
 
-         hours = (hours < 10) ? "0" + hours : hours;
-         minutes = (minutes < 10) ? "0" + minutes : minutes;
-         seconds = (seconds < 10) ? "0" + seconds : seconds;
-
-         return `${minutes}.${seconds}`;
-      }
+      //    // return `${minutes}.${seconds}`;
+      //    return hours > 0 ? `${minutes}.${minutes}.${seconds}` : `${minutes}.${seconds}`;
+      // }
 
       for (let i = 0; i < track.artists.length; i++) {
          artists.push(track.artists[i].name)
       }
 
       return (
-         <li className="playlist__item playlistitem" key={track.id}>
+         <li className={`playlist__item playlistitem ${!track.preview_url? "disabled" : ""}`} key={track.id}>
             <div className="playlistitem__number">{i+1}</div>
             <div className="playlistitem__name">
                <div className="playlistitem__cover">
                   <img src={track.album.images[2].url} alt="cover" />
                </div>
                <div className="playlistitem__ditails">
-                  <div className="playlistitem__song">{track.name}</div>
-                  <div className="playlistitem__artists">{artists.join(", ")}</div>
+                  <div className={`playlistitem__song ${currentTrackClasses}`}>{track.name}</div>
+                  <div className={`playlistitem__artists ${currentTrackClasses}`}>{artists.join(", ")}</div>
                </div>
 
             </div>
@@ -76,7 +100,7 @@ const PlaylistPage = () => {
       );
    });
 
-
+   
    return (
       <div className='playlist'>
          <div className="playlist__header">
@@ -87,7 +111,7 @@ const PlaylistPage = () => {
                <div className="playlist__type">плейлист</div>
                <div className="playlist__name">{name ?? ""}</div>
                <div className="playlist__description">{description}</div>
-               <div className="playlist__summary">SUMMARY</div>
+               <div className="playlist__summary">{`треков: ${totalAmount}, длительность ${songDuration(totalTime)}`}</div>
             </div>
          </div>
          <div className="playlist__container">

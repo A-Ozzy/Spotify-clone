@@ -69,6 +69,12 @@ export const togglePlay = createAsyncThunk(
                Authorization: `Bearer ${token}`,
                'Content-Type': "application/json"
             },
+            data: {
+               "context_uri": null,
+               "offset": {
+                  "position": null,
+                },
+            },
          });
          if (response.status === 204) {
             return true
@@ -149,8 +155,12 @@ export const toggleRepeat = createAsyncThunk(
 
          });
          if (response.status === 204) {
+            // console.log(response.status);
+            
             return true
          } else {
+            // console.log(response);
+            
             return response.data
          }
 

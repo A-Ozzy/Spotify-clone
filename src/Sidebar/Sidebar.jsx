@@ -17,6 +17,7 @@ const Sidebar = () => {
    const dispatch = useDispatch();
    const token = useSelector(state => state.login.token);
    const playlist = useSelector(state => state.playlist.playlist);
+   const currentCollectionUri = useSelector(state => state.player.playbackState.context_uri);
 
    useEffect(() => {
 
@@ -43,7 +44,7 @@ const Sidebar = () => {
                   const { name, id, uri } = item;
 
                   return (
-                     <li key={id} data-playlist-uri={uri}>
+                     <li key={id} data-playlist-uri={uri} className={currentCollectionUri === uri? "playing" : ""}>
                         <Link to={`/playlist/${id}`}>
                            <SidebarOption text={name} />
                         </Link>

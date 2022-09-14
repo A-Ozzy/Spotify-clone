@@ -63,6 +63,11 @@
       color: rgb(173, 173, 173);
       margin: 0.8rem 0;
    }
+   &__summary{
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      color: rgba(173, 173, 173, 0.8);
+   }
 }
 
 hr {
@@ -74,6 +79,11 @@ hr {
    padding: 0.8rem;
    display: grid;
    grid-template-columns: minmax(1.5rem, 2rem) 2fr repeat(2, 1fr) minmax(3rem, 4rem);
+   &:hover{
+      background-color:rgba(150, 150, 150, 0.4);
+      color: white;
+   }
+
    &__name {
       display: flex;
       align-items: center;
@@ -93,13 +103,12 @@ hr {
       margin: 0.4rem 0px 0px 0px;
    }
 }
-// .playlistitem__cover{
-//    width: 3rem;
-//    height: 3rem;
-//    margin: 0px 0.8rem 0px 0px;
-//    img{
-//       width: 100%;
-//       height: 100%;
-//       object-fit: contain;
-//    }
-// }
+.playlistitem.disabled{
+   color: rgba(132, 132, 132, 0.7);
+}
+.playlistitem__song.current{
+   color: rgb(147, 223, 25);
+}
+.playlistitem__artists.current{
+   color: rgba(147, 223, 25, 0.7);
+}
