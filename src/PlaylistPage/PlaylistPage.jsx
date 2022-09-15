@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCollection, fetchCollectionTracks } from '../store/collectionSlice';
+import { togglePlay } from '../store/playerSlice';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 import "./PlaylistPage.scss";
@@ -21,6 +22,8 @@ const PlaylistPage = () => {
    const description = useSelector(state => state.collection.description);
    const currentTrackId = useSelector(state => state.player.playbackState.id);
    const currentCollectionUri = useSelector(state => state.player.playbackState.context_uri);
+   const [uri, setUri] = useState("");
+   const [url, setUrl] = useState("");
    let totalTime = 0;
 
 
@@ -37,32 +40,44 @@ const PlaylistPage = () => {
       return hours > 0 ? `${hours}.${minutes}.${seconds}` : `${minutes}.${seconds}`;
    };
 
+   const setToPlay = (position) => {
+      // console.log({url, token, ...{uri, position}});
+      const data = {
+         "context_uri": uri,
+         "offset": {
+            "position": position,
+         },
+      };
+
+      dispatch(togglePlay({ url, token, data }));
+   };
 
    useEffect(() => {
-      const url = `https://api.spotify.com/v1/me/player/play`;
-      const uri = `spotify:playlist:${id.split(":").slice(-1)}`;
-      
+      setUrl(`https://api.spotify.com/v1/me/player/play`);
+      setUri(`spotify:playlist:${id.split(":").slice(-1)}`);
+
       if (uri !== currentCollectionUri) {
          dispatch(fetchCollection({ url, token, uri }));
 
       }
 
       dispatch(fetchCollectionTracks({ token, id }));
-      
 
-   }, [id]);
+
+   }, [id, uri]);
 
 
    const playlistItems = items.map((item, i) => {
-      
-      const { track } = item;      
+
+      const { track } = item;
       let artists = [];
       totalTime += track.duration_ms;
 
       const addedAt = item.added_at.split("T");
       const currentTrackClasses = `${track.id === currentTrackId ? "current" : ""}`;
-   
-      
+
+      // console.log(item);
+
       // function songDuration(duration) {
       //    var seconds = parseInt((duration / 1000) % 60),
       //       minutes = parseInt((duration / (1000 * 60)) % 60),
@@ -81,8 +96,11 @@ const PlaylistPage = () => {
       }
 
       return (
-         <li className={`playlist__item playlistitem ${!track.preview_url? "disabled" : ""}`} key={track.id}>
-            <div className="playlistitem__number">{i+1}</div>
+         <li className={`playlist__item playlistitem ${!track.preview_url ? "disabled" : ""}`}
+            key={track.id}
+            onClick={() => setToPlay(i)}
+         >
+            <div className="playlistitem__number">{i + 1}</div>
             <div className="playlistitem__name">
                <div className="playlistitem__cover">
                   <img src={track.album.images[2].url} alt="cover" />
@@ -100,7 +118,7 @@ const PlaylistPage = () => {
       );
    });
 
-   
+
    return (
       <div className='playlist'>
          <div className="playlist__header">

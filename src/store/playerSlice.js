@@ -59,8 +59,9 @@ export const fetchPlaybackState = createAsyncThunk(
 
 export const togglePlay = createAsyncThunk(
    'player/togglePlay',
-   async function ({ url, token }, { rejectWithValue }) {
-
+   async function ({ url, token, data={} }, { rejectWithValue }) {
+      // console.log(fetchParam);
+      
       try {
          const response = await axios({
             method: "PUT",
@@ -69,12 +70,8 @@ export const togglePlay = createAsyncThunk(
                Authorization: `Bearer ${token}`,
                'Content-Type': "application/json"
             },
-            data: {
-               "context_uri": null,
-               "offset": {
-                  "position": null,
-                },
-            },
+            data,
+            
          });
          if (response.status === 204) {
             return true
