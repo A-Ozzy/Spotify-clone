@@ -10,8 +10,8 @@ import "./PlaylistPage.scss";
 
 const PlaylistPage = () => {
 
-   const param = useParams();
-   const { id } = param;
+   // const param = useParams();
+   const { id } = useParams();
 
    const dispatch = useDispatch();
    const token = useSelector(state => state.login.token);
@@ -25,6 +25,7 @@ const PlaylistPage = () => {
    const [uri, setUri] = useState("");
    const [url, setUrl] = useState("");
    let totalTime = 0;
+
 
 
    function songDuration(duration) {
@@ -41,7 +42,6 @@ const PlaylistPage = () => {
    };
 
    const setToPlay = (position) => {
-      // console.log({url, token, ...{uri, position}});
       const data = {
          "context_uri": uri,
          "offset": {
@@ -66,6 +66,7 @@ const PlaylistPage = () => {
 
    }, [id, uri]);
 
+   
 
    const playlistItems = items.map((item, i) => {
 
@@ -78,18 +79,6 @@ const PlaylistPage = () => {
 
       // console.log(item);
 
-      // function songDuration(duration) {
-      //    var seconds = parseInt((duration / 1000) % 60),
-      //       minutes = parseInt((duration / (1000 * 60)) % 60),
-      //       hours = parseInt((duration / (1000 * 60 * 60)) % 24);
-
-      //    hours = (hours < 10) ? "0" + hours : hours;
-      //    minutes = (minutes < 10) ? "0" + minutes : minutes;
-      //    seconds = (seconds < 10) ? "0" + seconds : seconds;
-
-      //    // return `${minutes}.${seconds}`;
-      //    return hours > 0 ? `${minutes}.${minutes}.${seconds}` : `${minutes}.${seconds}`;
-      // }
 
       for (let i = 0; i < track.artists.length; i++) {
          artists.push(track.artists[i].name)

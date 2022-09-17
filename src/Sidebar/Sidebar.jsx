@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import { fetchUserPlaylists } from '../store/playlistSlice';
 import SidebarOption from '../SidebarOption';
 import { Link } from "react-router-dom";
@@ -30,12 +31,34 @@ const Sidebar = () => {
          <div className="sidebar__logo">
             <img src="https://getheavy.com/wp-content/uploads/2019/12/spotify2019-830x350.jpg" alt="spotify-logo" />
          </div>
-         <div className="sidebar__menu">
-            <SidebarOption Icon={HomeIcon} text="Home" />
-            <SidebarOption Icon={SearchIcon} text="Search" />
-            <SidebarOption Icon={LibraryBooksIcon} text="Your library" />
-            <SidebarOption Icon={ControlPointDuplicateIcon} text="Create playlist" />
-            <SidebarOption Icon={StarsIcon} text="Favorit tracks" />
+         <div className="sidebar__menu sidebarmenu">
+            <ul className='sidebarmenu__list'>
+               <li className="sidebarmenu__link">
+                  <NavLink to="/home">
+                     <SidebarOption Icon={HomeIcon} text="Home" />
+                  </NavLink>
+               </li>
+               <li className="sidebarmenu__link">
+                  <NavLink to="/search">
+                     <SidebarOption Icon={SearchIcon} text="Search" />
+                  </NavLink>
+               </li>
+               <li className="sidebarmenu__link">
+                  <NavLink to="/library">
+                     <SidebarOption Icon={LibraryBooksIcon} text="Your library" />
+                  </NavLink>
+               </li>
+               <li className="sidebarmenu__link">
+                  <NavLink to="/create-playlist">
+                     <SidebarOption Icon={ControlPointDuplicateIcon} text="Create playlist" />
+                  </NavLink>
+               </li>
+               <li className="sidebarmenu__link">
+                  <NavLink to="/favorite-tracks">
+                     <SidebarOption Icon={StarsIcon} text="Favorit tracks" />
+                  </NavLink>
+               </li>
+            </ul>
          </div>
          <div className="sidebar__playlists">
             <ul className="sidebar__playlist">
@@ -44,7 +67,7 @@ const Sidebar = () => {
                   const { name, id, uri } = item;
 
                   return (
-                     <li key={id} data-playlist-uri={uri} className={currentCollectionUri === uri? "playing" : ""}>
+                     <li key={id} data-playlist-uri={uri} className={currentCollectionUri === uri ? "playing" : ""}>
                         <Link to={`/playlist/${id}`}>
                            <SidebarOption text={name} />
                         </Link>

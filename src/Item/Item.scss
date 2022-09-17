@@ -10,6 +10,7 @@
 .item {
    font-size: 0.9rem;
    margin: 0 auto;
+   // 
    :not(:last-child) {
       margin-bottom: 1rem;
    }
@@ -19,6 +20,9 @@
    position: relative;
    &:hover {
       background-color: rgba(39, 39, 39, 0.7);
+   }
+   a{
+      color: white;
    }
    &__img {
       margin: 0 auto;
