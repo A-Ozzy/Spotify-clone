@@ -1,0 +1,48 @@
+@import "../index.scss";
+
+.playwiget {
+   width: 30px;
+   height: 30px;
+   display: flex;
+   justify-content: center;
+   align-items: flex-end;
+   padding: 3px;
+   & > :not(:last-child) {
+      margin: 0px 4px 0px 0px;
+   }
+   &__item {
+      width: 3px;
+      height: 20px;
+      border-radius: 5px;
+      background-color: rgb(67, 227, 9);
+      animation: play 1.3s linear infinite normal running 0s both;
+   }
+}
+
+.playwiget__item:nth-child(2){
+   animation-delay: 0.3s;
+}
+.playwiget__item:nth-child(3){
+   animation-delay: 0.4s;
+}
+
+@keyframes play {
+   0% {
+      height: 0%;
+   }
+   20%{
+      height: 70%;
+   }
+   40%{
+      height: 20%;
+   }
+   50% {
+      height: 100%;
+   }
+   80%{
+      height: 40%;
+   }
+   100% {
+      height: 0%;
+   }
+}

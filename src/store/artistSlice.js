@@ -39,7 +39,7 @@ export const fetchTopTracks = createAsyncThunk(
             console.log('ne ok');
             
          }
-         const data = await response.data;        
+         const data = await response.data.tracks;  
          return data
 
       } catch (err) {
@@ -52,6 +52,7 @@ export const fetchTopTracks = createAsyncThunk(
 const artistSlice = createSlice({
    name: "artist",
    initialState: {
+      // topTracks: [],
    },
    extraReducers: {
       [fetchArtist.fulfilled]: (state, action) => {
@@ -60,11 +61,18 @@ const artistSlice = createSlice({
             name: action.payload.name,
             followers: action.payload.followers.total,
             image: action.payload.images[0].url,
+            // uri: action.payload.uri,
          }
 
       },
       [fetchTopTracks.fulfilled]: (state, action) => {
-         console.log(action.payload);
+         // console.log(action.payload);
+   
+         const uris = action.payload.map((it) => it.uri, []);
+         // console.log(uris);
+
+         state.topTracks = action.payload;
+         state.tracksUris = uris;
       },
 
    },

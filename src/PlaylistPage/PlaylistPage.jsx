@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchCollection, fetchCollectionTracks } from '../store/collectionSlice';
 import { togglePlay } from '../store/playerSlice';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { songDuration } from '../Util';
+import PlayingIndicator from '../PlayingIndicator';
 
 import "./PlaylistPage.scss";
 
@@ -27,20 +29,6 @@ const PlaylistPage = () => {
    let totalTime = 0;
 
 
-
-   function songDuration(duration) {
-      var seconds = parseInt((duration / 1000) % 60),
-         minutes = parseInt((duration / (1000 * 60)) % 60),
-         hours = parseInt((duration / (1000 * 60 * 60)) % 24);
-
-      hours = (hours < 10) ? "0" + hours : hours;
-      minutes = (minutes < 10) ? "0" + minutes : minutes;
-      seconds = (seconds < 10) ? "0" + seconds : seconds;
-
-      // return `${minutes}.${seconds}`;
-      return hours > 0 ? `${hours}.${minutes}.${seconds}` : `${minutes}.${seconds}`;
-   };
-
    const setToPlay = (position) => {
       const data = {
          "context_uri": uri,
@@ -62,7 +50,7 @@ const PlaylistPage = () => {
       }
 
       dispatch(fetchCollectionTracks({ token, id }));
-
+      
 
    }, [id, uri]);
 
@@ -90,6 +78,7 @@ const PlaylistPage = () => {
             onClick={() => setToPlay(i)}
          >
             <div className="playlistitem__number">{i + 1}</div>
+            {track.id === currentTrackId? <PlayingIndicator/>: <div></div>}
             <div className="playlistitem__name">
                <div className="playlistitem__cover">
                   <img src={track.album.images[2].url} alt="cover" />

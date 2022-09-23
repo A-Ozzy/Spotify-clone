@@ -47,8 +47,6 @@ export const fetchPlaybackState = createAsyncThunk(
             throw new Error('Error');
          }
 
-         // console.log(response.data);
-
          return response.data
 
       } catch (err) {
@@ -168,6 +166,38 @@ export const toggleRepeat = createAsyncThunk(
    }
 );
 
+export const setPlaybackVolume = createAsyncThunk(
+   'player/setPlaybackVolume',
+   async function ({ defaultVolume, token }, { rejectWithValue }) {
+
+      try {
+         
+         const response = await axios({
+            method: "PUT",
+            url: `https://api.spotify.com/v1/me/player/volume?volume_percent=${defaultVolume}`,
+            headers: {
+               Authorization: `Bearer ${token}`,
+               'Content-Type': "application/json"
+            }
+
+         });
+         if (response.status === 204) {
+            // console.log(response.status);
+            
+            return true
+         } else {
+            // console.log(response);
+            
+            return response.data
+         }
+
+
+      } catch (err) {
+         return rejectWithValue(err.response);
+      };
+   }
+);
+
 const playerSlice = createSlice({
    name: 'player',
    initialState: {
@@ -201,6 +231,9 @@ const playerSlice = createSlice({
       },
       [toggleRepeat.fulfilled]: (state, action) => {
          // console.log(action.payload);
+      },
+      [setPlaybackVolume.fulfilled]: (state, action) => {
+         // console.log("volume seted");
       },
    },
 });

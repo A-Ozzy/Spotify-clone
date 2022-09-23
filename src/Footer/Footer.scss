@@ -4,7 +4,7 @@
    display: grid;
    grid-template-columns: 22.5rem 2fr 15.625rem;
    grid-template-rows: 4.35rem;
-   
+
    justify-items: start;
    align-items: center;
    padding: 0.2rem 0.5rem;
@@ -14,10 +14,10 @@
    grid-template-columns: 4.375rem 9.375rem 4.375rem;
    align-items: center;
    gap: 0.6rem;
-   &__img{
+   &__img {
       width: 4rem;
       height: 4rem;
-      img{
+      img {
          width: 100%;
          height: 100%;
          object-fit: contain;
@@ -68,6 +68,37 @@
 .footerright {
    justify-self: end;
    margin: 0px 0.8rem 0px 0px;
+   &__volume {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      input[type="range"] {
+         margin: 0px 0px 0px 7px;
+         -webkit-appearance: none;
+         height: 3px;
+         background: grey;
+         border-radius: 5px;
+         background-image: linear-gradient(#34d120, #34d120);
+         background-repeat: no-repeat;
+      }
+      input[type='range']::-webkit-slider-runnable-track {
+         -webkit-appearance: none;
+         box-shadow: none;
+         border: none;
+         background: transparent;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+         -webkit-appearance: none;
+         height: 10px;
+         width: 10px;
+         border-radius: 50%;
+         background: #34d120;
+         cursor: pointer;
+         box-shadow: 0 0 2px 0 #555;
+      }
+   }
 }
 
 // .MuiSlider-root {
