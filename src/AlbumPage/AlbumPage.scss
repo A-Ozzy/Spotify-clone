@@ -1,0 +1,49 @@
+@import '../index.scss';
+
+.album{
+   
+   &__header{
+      background: linear-gradient(180deg, rgba(181,35,72,1) 13%, rgba(38,96,150,1) 53%, rgba(1,5,9,1) 97%);
+      padding: 2rem;
+      display: flex;
+      align-items: flex-end;
+      gap: 1rem;
+   }
+   &__img{
+      width: 18.75rem;
+      height: 18.75rem;
+      img{
+         width: 100%;
+         height: 100%;
+         object-fit: cover;
+      }
+   }
+   &__type{
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 500;
+   }
+   &__name{
+      font-size: 5rem;
+      color: rgba(255, 255, 255, 1);
+      font-weight: bold;
+      margin: 0.8rem 0;
+   }
+   &__info{
+      color: rgba(255, 255, 255, 0.8);
+      margin: 2rem 0px 0px 0px;
+      font-weight: 500;
+      > span{
+         &:not(:last-child){
+            margin: 0px 1rem 0px 0px;
+            position: relative;
+            &::after{
+               position: absolute;
+               bottom: 3px;
+               right: -10px;
+               content: "\2022";
+            }
+         }
+      }
+   }
+}

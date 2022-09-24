@@ -15,11 +15,13 @@ const Content = () => {
    useEffect(() => {
       dispatch(fetchTopArtists(token));
    }, [dispatch]);
-
+   
    return (
       <div className='content'>
          <User/>
-         <BoxItems data={topArtists} title={ "Топ исполнителей этого месяца"} />
+         <BoxItems data={topArtists}
+            title={"Топ исполнителей этого месяца"}
+            subTitile={"Видны только тебе"} />
       </div>
    );
 };

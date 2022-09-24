@@ -1,22 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import Player from '../Player';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { Box, debounce, Slider } from '@material-ui/core';
-import Stack from '@mui/material/Stack';
+import { debounce } from '@material-ui/core';
 import { setPlaybackVolume } from '../store/playerSlice';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import BrandingWatermarkIcon from '@mui/icons-material/BrandingWatermark';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 
 import './Footer.scss';
-import { useCallback } from 'react';
 
 function Footer() {
 
    const dispatch = useDispatch();
    const token = useSelector(state => state.login.token);
    const playbackState = useSelector(state => state.player.playbackState);
+   const deviceId = useSelector(state => state.player.deviceId);
 
    const songnameRef = useRef();
    const writerRef = useRef();
@@ -25,14 +23,17 @@ function Footer() {
    const [defaultVolume, setDefaultVolume] = useState(20);
 
    const getBackgroundSize = () => {
-      return {backgroundSize: `${(defaultVolume * 100) / 100}% 100%`};
+      return { backgroundSize: `${(defaultVolume * 100) / 100}% 100%` };
    };
+
+   const artists = playbackState?.artists?.map(item => item.name);
 
    const debouncedVolume = useCallback(
       debounce((defaultVolume) => {
-         dispatch(setPlaybackVolume({defaultVolume, token}));
+         dispatch(setPlaybackVolume({ defaultVolume, token }));
       }, 500), []
    );
+
 
    useEffect(() => {
       setSongnameWidth(songnameRef.current.clientWidth);
@@ -40,10 +41,13 @@ function Footer() {
    }, [playbackState, songnameRef.current?.clientWidth, writerRef.current?.clientWidth]);
 
    useEffect(() => {
-      debouncedVolume(defaultVolume)
+      if (deviceId) {
+         debouncedVolume(defaultVolume);
+      };
    }, [defaultVolume]);
 
-   const artists = playbackState?.artists?.map(item => item.name);
+
+
 
 
    return (
@@ -72,14 +76,6 @@ function Footer() {
             <Player />
          </div>
          <div className="footer__right footerright">
-            {/* <Box sx={{ width: 170 }}>
-               <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
-                  <VolumeUpIcon />
-                  {/* <Slider
-                     color=""
-                  /> */}
-            {/* </Stack>
-            </Box> */}
             <div className="footerright__volume">
                <VolumeUpIcon />
                <input className="footerright__slide"

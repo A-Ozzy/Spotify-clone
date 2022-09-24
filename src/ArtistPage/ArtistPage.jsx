@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from "react-router-dom";
-import { fetchArtist, fetchTopTracks } from '../store/artistSlice';
+import { fetchArtist, fetchTopTracks, fetchArtistAlbums } from '../store/artistSlice';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import PlayingIndicator from '../PlayingIndicator';
+import BoxItems from '../BoxItems';
 import { songDuration } from '../Util';
 import { togglePlay } from '../store/playerSlice';
 
@@ -18,6 +19,7 @@ const ArtistPage = () => {
    const token = useSelector(state => state.login.token);
    const { id } = useParams();
    const artistInfo = useSelector(state => state.artist.artistInfo);
+   const artistAlbums = useSelector(state => state.artist.albums);
    const tracksUris = useSelector(state => state.artist.tracksUris);
    const topTracks = useSelector(state => state.artist.topTracks);
    const currentTrackId = useSelector(state => state.player.playbackState.id);
@@ -30,10 +32,21 @@ const ArtistPage = () => {
          dispatch(fetchArtist({ url, token }));
       }
 
-      dispatch(fetchTopTracks({ url: `https://api.spotify.com/v1/artists/${id}/top-tracks?market=ES`, token }));
+      // dispatch(fetchTopTracks({ url: `https://api.spotify.com/v1/artists/${id}/top-tracks?market=ES`, token }));
 
    }, [id, url]);
 
+   useEffect(() => {
+
+      dispatch(fetchTopTracks({ url: `https://api.spotify.com/v1/artists/${id}/top-tracks?market=ES`, token }));
+   }, [id]);
+
+   useEffect(() => {
+      if (artistInfo?.id) {
+         const { id } = artistInfo;
+         dispatch(fetchArtistAlbums({ id, token }));
+      }
+   }, [artistInfo]);
 
    const formattedNum = (num) => {
       const form = num?.toString().split(/(?=(?:\d{3})+$)/).join(" ");
@@ -56,7 +69,7 @@ const ArtistPage = () => {
          "offset": {
             "position": position,
          },
-      };      
+      };
       dispatch(togglePlay({ url: "https://api.spotify.com/v1/me/player/play", token, data }));
    };
 
@@ -66,17 +79,16 @@ const ArtistPage = () => {
 
       return (
          <li className='artist__trackitem trackitem' key={item.id}
-         onClick={()=> setToPlay(i)}>
+            onClick={() => setToPlay(i)}>
             <div className="trackitem__number">{i + 1}</div>
             <div className="trackitem__wiget">
-               { item.id === currentTrackId ? <PlayingIndicator />: <div></div>}
-               {/* <PlayingIndicator /> */}
+               {item.id === currentTrackId ? <PlayingIndicator /> : <div></div>}
             </div>
             <div className="trackitem__ditails">
                <div className="trackitem__cover">
                   <img src={images[2].url ?? ""} alt="cover" />
                </div>
-               <div className={`trackitem__name ${item.id === currentTrackId ? "current": ""}`}>{item.name}</div>
+               <div className={`trackitem__name ${item.id === currentTrackId ? "current" : ""}`}>{item.name}</div>
             </div>
             <div className="trackitem__album">{name}</div>
             <div className="trackitem__duration">{songDuration(item.duration_ms)}</div>
@@ -97,6 +109,7 @@ const ArtistPage = () => {
          <ul className="artist__tracklist">
             {trackList ?? null}
          </ul>
+         <BoxItems data={artistAlbums} title={ "Альбомы"}/>
       </div>
    );
 };

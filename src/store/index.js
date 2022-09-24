@@ -4,6 +4,7 @@ import playlistSlice from "./playlistSlice";
 import playlerSlice from "./playerSlice";
 import collectionSlice from "./collectionSlice";
 import artistSlice from "./artistSlice";
+import albumSlice from "./albumSlice";
 
 
 export default configureStore({
@@ -13,5 +14,6 @@ export default configureStore({
       player: playlerSlice,
       collection: collectionSlice,
       artist: artistSlice,
+      album: albumSlice,
    },
 });

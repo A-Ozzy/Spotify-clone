@@ -48,6 +48,29 @@ export const fetchTopTracks = createAsyncThunk(
    }
 );
 
+export const fetchArtistAlbums = createAsyncThunk(
+   'artist/fetchArtistAlbums',
+   async function ({ id, token, }, { rejectWithValue }) {     
+      try {
+         const response = await axios.get(
+            `https://api.spotify.com/v1/artists/${id}/albums?include_groups=album`, {
+            headers: {
+               Authorization: `Bearer ${token}`,
+               'Content-Type': "application/json"
+            }
+         });
+         if (!response.status === 200) {
+            throw new Error('Error');
+            
+         }
+         const data = await response.data.items;  
+         return data
+
+      } catch (err) {
+         return rejectWithValue(err.response.data.error);
+      };
+   }
+);
 
 const artistSlice = createSlice({
    name: "artist",
@@ -61,18 +84,20 @@ const artistSlice = createSlice({
             name: action.payload.name,
             followers: action.payload.followers.total,
             image: action.payload.images[0].url,
-            // uri: action.payload.uri,
+            uri: action.payload.uri,
+            id: action.payload.id,
          }
 
       },
       [fetchTopTracks.fulfilled]: (state, action) => {
-         // console.log(action.payload);
-   
-         const uris = action.payload.map((it) => it.uri, []);
-         // console.log(uris);
 
+         const uris = action.payload.map((it) => it.uri, []);
          state.topTracks = action.payload;
          state.tracksUris = uris;
+      },
+      [fetchArtistAlbums.fulfilled]: (state, action) => {
+         // console.log(action.payload);
+         state.albums = action.payload;
       },
 
    },

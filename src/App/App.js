@@ -5,6 +5,7 @@ import MainScreen from '../MainScreen';
 import Content from '../Content';
 import PlaylistPage from '../PlaylistPage';
 import ArtistPage from '../ArtistPage';
+import AlbumPage from '../AlbumPage';
 import { Routes, Route } from "react-router-dom";
 
 
@@ -21,6 +22,7 @@ function App() {
                <Route index element={<Content />} />
                <Route path="/playlist/:id" element={<PlaylistPage />} />
                <Route path="/artist/:id" element={<ArtistPage />} />
+               <Route path="/album/:id" element={<AlbumPage />} />
 
                <Route path="/home" element={<Content />} />
                <Route path="/search" element={<Content />} />

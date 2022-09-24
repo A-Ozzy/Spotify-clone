@@ -114,6 +114,7 @@ const PlaylistPage = () => {
             <ul className="playlist__list">
                <li className="playlist__item playlistitem">
                   <div className="playlistitem__number">#</div>
+                  <div className="playlistitem__number"></div>
                   <div className="playlistitem__name">NAME</div>
                   <div className="playlistitem__album">ALBUM</div>
                   <div className="playlistitem__date">ADDED AT</div>

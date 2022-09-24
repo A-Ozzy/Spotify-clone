@@ -1,14 +1,13 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-   fetchPlaybackState,
    togglePlay,
    switchToNextPrevious,
    switchDevice,
    toggleShuffle,
    toggleRepeat,
 } from '../store/playerSlice';
-import { setPlaybackState } from '../store/playerSlice';
+import { setPlaybackState, setDeviceId } from '../store/playerSlice';
 
 import ShuffleIcon from '@mui/icons-material/Shuffle';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
@@ -89,6 +88,7 @@ function Player() {
       });
       // Ready
       fireyPlayer.addListener("ready", ({ device_id }) => {
+         dispatch(setDeviceId(device_id));
          dispatch(switchDevice({ device_id, token }));
          console.log("Ready with Device ID", device_id);
       });

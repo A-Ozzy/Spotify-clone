@@ -4,28 +4,37 @@ import { Link } from 'react-router-dom';
 
 import "./Item.scss";
 
-function Item({ data }) {
+function Item({ data }) {   
 
+   const item = data?.map((i) => {
 
-   const item = data.map((i) => {
-      // console.log(i);
-
-      const { id, name, images, type, href } = i;
-      const typeItem = (type === "artist") ? <span>исполнитель</span> : <span>трэк</span>;
+      const { id, name, images, type, } = i;
+      
+      const typeItem = (type) => {
+         switch (type) {
+            case "artist":
+               return <span>исполнитель</span>;
+            case "track":
+               return <span>трэк</span>;
+            case "album":
+               return <span>альбом</span>;
+            default:
+               return <span>тип не определен</span>;
+         }
+      };
 
       return (
          <li className='item' id={id} key={id}>
-            <Link to={`/artist/${id}`}>
+            <Link to={`/${type}/${id}`}>
                <div className="item__img">
                   <img src={images[2].url} alt="cover" />
                </div>
                <div className="item__button"><PlayCircleOutlineIcon /></div>
                <div className="item__name">{name}</div>
                <div className="item__type">
-                  {typeItem}
+                  {typeItem(type)}
                </div>
             </Link>
-
          </li>
 
       )
