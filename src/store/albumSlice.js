@@ -31,7 +31,6 @@ const albumSlice = createSlice({
    },
    extraReducers: {
       [fetchAlbum.fulfilled]: (state, action) => {
-         // console.log(action.payload);
          state.name = action.payload.name;
          state.image = action.payload.images[1].url;
          state.id = action.payload.id;
@@ -40,6 +39,7 @@ const albumSlice = createSlice({
          state.tracks = action.payload.tracks.items;
          state.type = action.payload.type;
          state.artist = action.payload.artists[0].name;
+         state.uri = action.payload.uri;
          
 
       },
