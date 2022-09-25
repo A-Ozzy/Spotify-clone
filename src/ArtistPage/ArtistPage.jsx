@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from "react-router-dom";
-import { fetchArtist, fetchTopTracks, fetchArtistAlbums } from '../store/artistSlice';
+import { fetchArtist, fetchRelatedArtists, fetchTopTracks, fetchArtistAlbums } from '../store/artistSlice';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import PlayingIndicator from '../PlayingIndicator';
 import BoxItems from '../BoxItems';
@@ -20,6 +20,7 @@ const ArtistPage = () => {
    const { id } = useParams();
    const artistInfo = useSelector(state => state.artist.artistInfo);
    const artistAlbums = useSelector(state => state.artist.albums);
+   const related = useSelector(state => state.artist.related);
    const tracksUris = useSelector(state => state.artist.tracksUris);
    const topTracks = useSelector(state => state.artist.topTracks);
    const currentTrackId = useSelector(state => state.player.playbackState.id);
@@ -30,15 +31,14 @@ const ArtistPage = () => {
 
       if (url !== "") {
          dispatch(fetchArtist({ url, token }));
+         dispatch(fetchRelatedArtists({ url: `https://api.spotify.com/v1/artists/${id}/related-artists`, token }));
       }
-
-      // dispatch(fetchTopTracks({ url: `https://api.spotify.com/v1/artists/${id}/top-tracks?market=ES`, token }));
 
    }, [id, url]);
 
    useEffect(() => {
-
       dispatch(fetchTopTracks({ url: `https://api.spotify.com/v1/artists/${id}/top-tracks?market=ES`, token }));
+   
    }, [id]);
 
    useEffect(() => {
@@ -74,7 +74,6 @@ const ArtistPage = () => {
    };
 
    const trackList = topTracks?.map((item, i) => {
-      // console.log(item);
       const { images, name } = item.album;
 
       return (
@@ -109,7 +108,8 @@ const ArtistPage = () => {
          <ul className="artist__tracklist">
             {trackList ?? null}
          </ul>
-         <BoxItems data={artistAlbums} title={ "Альбомы"}/>
+         <BoxItems data={artistAlbums} title={"Альбомы"} />
+         {related && related.length > 0 ? <BoxItems data={related} title={"Похожие"}/> : null}
       </div>
    );
 };

@@ -25,7 +25,6 @@ const AlbumPage = () => {
    const tracks = useSelector(state => state.album.tracks);
    const uri = useSelector(state => state.album.uri);
 
-   // console.log(id);
 
    useEffect(() => {
 
@@ -51,6 +50,7 @@ const AlbumPage = () => {
    }, [tracks]);
 
    const albumItems = tracks?.map((val, i) => {
+
       const currentTrackClasses = `${val.id === currentTrackId ? "current" : ""}`;
       return (
          <li className="albumcollection__item" id={val.id} key={val.id}

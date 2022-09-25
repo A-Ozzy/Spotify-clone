@@ -27,7 +27,7 @@ function Item({ data }) {
          <li className='item' id={id} key={id}>
             <Link to={`/${type}/${id}`}>
                <div className="item__img">
-                  <img src={images[2].url} alt="cover" />
+                  <img src={images[2]?.url} alt="cover" />
                </div>
                <div className="item__button"><PlayCircleOutlineIcon /></div>
                <div className="item__name">{name}</div>

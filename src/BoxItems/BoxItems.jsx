@@ -11,7 +11,7 @@ function BoxItems({ data, title, subTitile }) {
          <div className="boxitems__title">{title}</div>
          <div className="boxitems__subtitle">{subTitile ?? ""}</div>
          <div className="boxitems__collection">
-            <Item data={ data} />
+            {data?.length < 1 ? <p>Нет ни одного альбома</p>: <Item data={ data} />}
          </div>
       </div>
    );

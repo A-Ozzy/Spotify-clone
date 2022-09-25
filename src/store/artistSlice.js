@@ -25,6 +25,29 @@ export const fetchArtist = createAsyncThunk(
    }
 );
 
+export const fetchRelatedArtists = createAsyncThunk(
+   'artist/fetchRelatedArtists',
+   async function ({ url, token, }, { rejectWithValue }) {     
+      try {
+         const response = await axios.get(url, {
+            headers: {
+               Authorization: `Bearer ${token}`,
+               'Content-Type': "application/json"
+            }
+         });
+         if (!response.status === 200) {
+            console.log('ne ok');
+            
+         }
+         const data = await response.data.artists;        
+         return data
+
+      } catch (err) {
+         return rejectWithValue(err.response.data.error);
+      };
+   }
+);
+
 export const fetchTopTracks = createAsyncThunk(
    'artist/fetchTopTracks',
    async function ({ url, token, }, { rejectWithValue }) {     
@@ -75,7 +98,7 @@ export const fetchArtistAlbums = createAsyncThunk(
 const artistSlice = createSlice({
    name: "artist",
    initialState: {
-      // topTracks: [],
+
    },
    extraReducers: {
       [fetchArtist.fulfilled]: (state, action) => {
@@ -87,6 +110,11 @@ const artistSlice = createSlice({
             uri: action.payload.uri,
             id: action.payload.id,
          }
+
+      },
+      [fetchRelatedArtists.fulfilled]: (state, action) => {
+         console.log(action.payload);
+         state.related = action.payload;
 
       },
       [fetchTopTracks.fulfilled]: (state, action) => {
