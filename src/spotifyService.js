@@ -1,6 +1,6 @@
 
 const clientId = '56cc4ab9abb849c2b30968f0b315297e';
-const redirectUrl = 'http://localhost:3000/';
+const redirectUrl = 'https://gregarious-crostata-14f281.netlify.app/api/auth/callback/spotify';
 const apiUrl = 'https://accounts.spotify.com/authorize';
 const scopes = [
    "user-read-currently-playing",
