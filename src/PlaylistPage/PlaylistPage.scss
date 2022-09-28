@@ -70,7 +70,6 @@
 }
 
 hr {
-   // margin: 1rem 0;
    border: 1px solid rgba(122, 121, 121, 0.8);
 }
 .playlistitem {
@@ -82,6 +81,9 @@ hr {
    &:hover{
       background-color:rgba(150, 150, 150, 0.4);
       color: white;
+      .playlistitem__link{
+         color: white;
+      }
    }
 
    &__name {
@@ -102,9 +104,25 @@ hr {
       font-size: 0.7rem;
       margin: 0.4rem 0px 0px 0px;
    }
+   &__album {
+      font-size: 0.9rem;
+      color: rgba(122, 121, 121, 0.8);
+      &:hover {
+         .playlistitem__link {
+            border-bottom: 1px solid white;
+         }
+      }
+   }
+   &__link {
+      // color: white;
+      color: rgba(200, 199, 199, 0.8);
+      font-weight: 500;
+      line-height: 2rem;
+   }
 }
 .playlistitem.disabled{
    color: rgba(132, 132, 132, 0.7);
+   pointer-events: none;
 }
 .playlistitem__song.current{
    color: rgb(147, 223, 25);

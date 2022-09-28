@@ -1,11 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-
 export const switchDevice = createAsyncThunk(
    'player/switchDevice',
    async function ({ device_id, token }, { rejectWithValue }) {
-
+      
       try {
          const response = await axios({
             method: "PUT",
@@ -19,15 +18,15 @@ export const switchDevice = createAsyncThunk(
                play: false,
             }
          });
-         if (response.status === 204) {
-            return true
+         if (response.status === 202) {
+            return response.status
          } else {
             return response.status
          }
 
 
       } catch (err) {
-         return rejectWithValue(err.response);
+         return rejectWithValue(err.response.config);
       };
    }
 );
@@ -58,8 +57,7 @@ export const fetchPlaybackState = createAsyncThunk(
 export const togglePlay = createAsyncThunk(
    'player/togglePlay',
    async function ({ url, token, data = {} }, { rejectWithValue }) {
-      // console.log(fetchParam);
-
+      
       try {
          const response = await axios({
             method: "PUT",
@@ -185,7 +183,7 @@ export const setPlaybackVolume = createAsyncThunk(
             return true
          }
 
-      } catch (err) {         
+      } catch (err) {
          return rejectWithValue(err.response.data.error.message);
       };
    }
@@ -209,13 +207,15 @@ const playerSlice = createSlice({
    extraReducers: {
 
       [togglePlay.fulfilled]: (state, action) => {
-         if (action.payload) {
-            state.playbackState.play = !state.playbackState.play;
-         }
-
       },
       [togglePlay.rejected]: (state, action) => {
-
+         // console.log(" play rej: ", action.payload);
+      },
+      [switchDevice.fulfilled]: (state, action) => {
+         // console.log("device switced", action.payload);
+      },
+      [switchDevice.rejected]: (state, action) => {
+         console.log("switching rejected", action.payload);
       },
       [switchToNextPrevious.fulfilled]: (state, action) => {
 

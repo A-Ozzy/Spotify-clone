@@ -7,6 +7,7 @@ import PlaylistPage from '../PlaylistPage';
 import ArtistPage from '../ArtistPage';
 import AlbumPage from '../AlbumPage';
 import { Routes, Route } from "react-router-dom";
+import Search from '../Search';
 
 
 import './App.scss';
@@ -25,7 +26,7 @@ function App() {
                <Route path="/album/:id" element={<AlbumPage />} />
 
                <Route path="/home" element={<Content />} />
-               <Route path="/search" element={<Content />} />
+               <Route path="/search" element={<Search />} />
                <Route path="/library" element={<Content />} />
                <Route path="/create-playlist" element={<Content />} />
                <Route path="/favorite-tracks" element={<Content />} />

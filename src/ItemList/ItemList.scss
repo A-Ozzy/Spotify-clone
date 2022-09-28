@@ -1,0 +1,50 @@
+.trackitem {
+   display: grid;
+   grid-template-columns: 0.5rem 2rem 2fr 1fr minmax(5rem, 6rem);
+   align-items: center;
+   column-gap: 0.5rem;
+   cursor: pointer;
+   padding: 0 0.5rem;
+   max-width: 1000px;
+   &:hover {
+      background-color: rgba(150, 150, 150, 0.4);
+   }
+   &:not(:last-child) {
+      margin: 0px 0px 1rem 0px;
+   }
+   &__ditails {
+      display: flex;
+      align-items: center;
+   }
+   &__cover {
+      height: 3.125rem;
+      width: 3.125rem;
+      img {
+         width: 100%;
+         height: 100%;
+         object-fit: cover;
+      }
+   }
+   &__name {
+      margin: 0px 0px 0px 0.8rem;
+   }
+   &__album {
+      font-size: 0.8rem;
+      &:hover {
+         .trackitem__link {
+            border-bottom: 1px solid white;
+         }
+      }
+   }
+   &__link {
+      color: white;
+      line-height: 2rem;
+   }
+   &__duration {
+      font-size: 0.8rem;
+   }
+}
+
+.trackitem__name.current {
+   color: rgb(147, 223, 25);
+}

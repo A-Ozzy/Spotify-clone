@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import Player from '../Player';
+import Loader from '../Loader/Loader';
 import { useDispatch, useSelector } from 'react-redux';
 import { debounce } from '@material-ui/core';
 import { setPlaybackVolume } from '../store/playerSlice';
@@ -15,7 +16,6 @@ function Footer() {
    const token = useSelector(state => state.login.token);
    const playbackState = useSelector(state => state.player.playbackState);
    const deviceId = useSelector(state => state.player.deviceId);
-
    const songnameRef = useRef();
    const writerRef = useRef();
    const [songnameWidth, setSongnameWidth] = useState(0);
@@ -46,15 +46,11 @@ function Footer() {
       };
    }, [defaultVolume]);
 
-
-
-
-
    return (
       <div className="footer">
          <div className="footer__left footerleft">
             <div className="footerleft__img">
-               {playbackState.songImg ? <img src={playbackState.songImg} alt="song cover" /> : <p>nothing to play</p>}
+               {playbackState.songImg ? <img src={playbackState.songImg} alt="song cover" /> : <Loader />}
             </div>
             <div className="footerleft__info">
                <div ref={songnameRef}

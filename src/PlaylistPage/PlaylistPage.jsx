@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCollection, fetchCollectionTracks } from '../store/collectionSlice';
 import { togglePlay } from '../store/playerSlice';
@@ -12,7 +12,6 @@ import "./PlaylistPage.scss";
 
 const PlaylistPage = () => {
 
-   // const param = useParams();
    const { id } = useParams();
 
    const dispatch = useDispatch();
@@ -26,7 +25,6 @@ const PlaylistPage = () => {
    const currentCollectionUri = useSelector(state => state.player.playbackState.context_uri);
    const [uri, setUri] = useState("");
    const [url, setUrl] = useState("");
-   let totalTime = 0;
 
 
    const setToPlay = (position) => {
@@ -54,19 +52,16 @@ const PlaylistPage = () => {
 
    }, [id, uri]);
 
-   
+   const totalTime = items.reduce((acc, cur) => {      
+      return acc += cur.track.duration_ms;
+   }, 0);
 
    const playlistItems = items.map((item, i) => {
 
       const { track } = item;
       let artists = [];
-      totalTime += track.duration_ms;
-
       const addedAt = item.added_at.split("T");
       const currentTrackClasses = `${track.id === currentTrackId ? "current" : ""}`;
-
-      // console.log(item);
-
 
       for (let i = 0; i < track.artists.length; i++) {
          artists.push(track.artists[i].name)
@@ -89,7 +84,10 @@ const PlaylistPage = () => {
                </div>
 
             </div>
-            <div className="playlistitem__album">{track.album.name}</div>
+            <div className="playlistitem__album">
+               {/* {track.album.name} */}
+               <Link to={`/${track.album.type}/${track.album.id}`} className="playlistitem__link">{name}</Link>
+            </div>
             <div className="playlistitem__date">{addedAt[0]}</div>
             <div className="playlistitem__duration">{songDuration(track.duration_ms)}</div>
          </li>

@@ -16,6 +16,8 @@ import RepeatIcon from '@mui/icons-material/Repeat';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutline';
 
+// import axios from 'axios';
+
 import './Player.scss';
 
 function Player() {
@@ -23,6 +25,8 @@ function Player() {
    const dispatch = useDispatch();
    const token = useSelector(state => state.login.token);
    const playbackState = useSelector(state => state.player.playbackState);
+   // const resetDevice = useSelector(state => state.player.resetDevice);
+   // const deviceId = useSelector(state => state.player.deviceId);
 
    let fireyPlayer = useRef(null);
 
@@ -66,7 +70,7 @@ function Player() {
          console.log("player_state_changed");         
          try {
             if (state) {
-               
+
                const { duration, paused, position, repeat_mode, shuffle, track_window, context } = state;
                const { current_track } = track_window;
                dispatch(setPlaybackState({
@@ -98,7 +102,7 @@ function Player() {
       });
       // Connect the player!
       fireyPlayer.connect()
-   },[]);
+   }, []);
 
    const toggleMusic = () => {
       const url = playbackState.play ? `https://api.spotify.com/v1/me/player/pause` : `https://api.spotify.com/v1/me/player/play`;
@@ -115,11 +119,40 @@ function Player() {
       dispatch(toggleShuffle({ action, token }))
    };
 
+   // useEffect(() => {
+   //    if (resetDevice) {
+   //       // console.log("device: ", deviceId );
+   //       async function check() {
+   //          const response = await axios({
+   //             method: "GET",
+   //             url: "https://api.spotify.com/v1/me/player/devices",
+   //             headers: {
+   //                Authorization: `Bearer ${token}`,
+   //                'Content-Type': "application/json"
+   //             },
+   //             // data: {
+   //             //    "device_ids": [device_id],
+   //             //    play: false,
+   //             // }
+   //          });
+   //          if (response.status === 200) {
+   //             console.log(response);
+                
+   //          } else {
+   //             console.log(response.status);
+   //          }
+   //       }
+
+   //       check()
+   //       // dispatch(switchDevice({ device_id : deviceId, token }));
+
+   //    }
+   // }, [resetDevice]);
 
    const switchRepeat = useCallback((value) => {
       const action = value ? "off" : "track";
       dispatch(toggleRepeat({ action, token }));
-   },[playbackState.repeat]);
+   }, [playbackState.repeat]);
 
 
 

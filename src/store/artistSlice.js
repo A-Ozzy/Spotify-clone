@@ -113,15 +113,13 @@ const artistSlice = createSlice({
 
       },
       [fetchRelatedArtists.fulfilled]: (state, action) => {
-         console.log(action.payload);
+         // console.log(action.payload);
          state.related = action.payload;
 
       },
       [fetchTopTracks.fulfilled]: (state, action) => {
 
-         const uris = action.payload.map((it) => it.uri, []);
          state.topTracks = action.payload;
-         state.tracksUris = uris;
       },
       [fetchArtistAlbums.fulfilled]: (state, action) => {
          // console.log(action.payload);
