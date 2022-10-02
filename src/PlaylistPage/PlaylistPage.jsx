@@ -6,6 +6,8 @@ import { togglePlay } from '../store/playerSlice';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { songDuration } from '../Util';
 import PlayingIndicator from '../PlayingIndicator';
+import Loader from '../Loader';
+import Error from '../Error';
 
 import "./PlaylistPage.scss";
 
@@ -17,10 +19,8 @@ const PlaylistPage = () => {
    const dispatch = useDispatch();
    const token = useSelector(state => state.login.token);
    const cover = useSelector(state => state.collection.image);
-   const name = useSelector(state => state.collection.name);
-   const totalAmount = useSelector(state => state.collection.totalAmount);
-   const items = useSelector(state => state.collection.items);
-   const description = useSelector(state => state.collection.description);
+   const { name, totalAmount, items, description,
+          isLoading, hasError, errorMessage, } = useSelector(state => state.collection);
    const currentTrackId = useSelector(state => state.player.playbackState.id);
    const currentCollectionUri = useSelector(state => state.player.playbackState.context_uri);
    const [uri, setUri] = useState("");
@@ -46,17 +46,14 @@ const PlaylistPage = () => {
          dispatch(fetchCollection({ url, token, uri }));
 
       }
+      dispatch(fetchCollectionTracks({ token, id }));   
+   }, [id, uri, url, currentCollectionUri, dispatch, token]);
 
-      dispatch(fetchCollectionTracks({ token, id }));
-      
-
-   }, [id, uri]);
-
-   const totalTime = items.reduce((acc, cur) => {      
+   const totalTime = items?.reduce((acc, cur) => {      
       return acc += cur.track.duration_ms;
    }, 0);
 
-   const playlistItems = items.map((item, i) => {
+   const playlistItems = items?.map((item, i) => {
 
       const { track } = item;
       let artists = [];
@@ -85,7 +82,6 @@ const PlaylistPage = () => {
 
             </div>
             <div className="playlistitem__album">
-               {/* {track.album.name} */}
                <Link to={`/${track.album.type}/${track.album.id}`} className="playlistitem__link">{name}</Link>
             </div>
             <div className="playlistitem__date">{addedAt[0]}</div>
@@ -94,6 +90,13 @@ const PlaylistPage = () => {
       );
    });
 
+   if (isLoading) {
+      return <Loader/>
+   }
+
+   if (hasError) {
+      return <Error errorMessage={ errorMessage } />
+   }
 
    return (
       <div className='playlist'>

@@ -10,7 +10,9 @@ const Content = () => {
 
    const dispatch = useDispatch();
    const token = useSelector(state => state.login.token);
-   const topArtists = useSelector(state => state.playlist.topArtists); 
+   const { topArtists,
+      topArtistsError,
+      topArtistsErrorMessage } = useSelector(state => state.playlist);  
 
    useEffect(() => {
       dispatch(fetchTopArtists(token));
@@ -21,7 +23,10 @@ const Content = () => {
          <User/>
          <BoxItems data={topArtists}
             title={"Топ исполнителей этого месяца"}
-            subTitile={"Видны только тебе"} />
+            subTitile={"Видны только тебе"}
+            hasError={topArtistsError? topArtistsError : undefined}
+            errorMessage={topArtistsErrorMessage? topArtistsErrorMessage : undefined}
+         />
       </div>
    );
 };

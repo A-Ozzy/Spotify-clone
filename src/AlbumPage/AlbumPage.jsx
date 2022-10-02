@@ -16,18 +16,13 @@ const AlbumPage = () => {
    const dispatch = useDispatch();
    const currentTrackId = useSelector(state => state.player.playbackState.id);
    const token = useSelector(state => state.login.token);
-   const image = useSelector(state => state.album.image);
-   const type = useSelector(state => state.album.type);
-   const name = useSelector(state => state.album.name);
-   const release_date = useSelector(state => state.album.release_date);
-   const artist = useSelector(state => state.album.artist);
-   const total_tracks = useSelector(state => state.album.total_tracks);
-   const tracks = useSelector(state => state.album.tracks);
-   const uri = useSelector(state => state.album.uri);
+   const { uri, tracks, total_tracks, artist,
+            release_date, name, type, image, 
+   } = useSelector(state => state.album);
 
 
    useEffect(() => {
-
+      
       dispatch(fetchAlbum({ id, token }));
    }, [id]);
 

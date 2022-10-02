@@ -5,6 +5,8 @@ import { fetchArtist, fetchRelatedArtists, fetchTopTracks, fetchArtistAlbums } f
 import VerifiedIcon from '@mui/icons-material/Verified';
 import ItemList from '../ItemList';
 import BoxItems from '../BoxItems';
+import Loader from '../Loader';
+import Error from '../Error';
 
 import './ArtistPage.scss';
 
@@ -16,11 +18,9 @@ const ArtistPage = () => {
    const dispatch = useDispatch();
    const token = useSelector(state => state.login.token);
    const { id } = useParams();
-   const artistInfo = useSelector(state => state.artist.artistInfo);
-   const artistAlbums = useSelector(state => state.artist.albums);
-   const related = useSelector(state => state.artist.related);
-   const topTracks = useSelector(state => state.artist.topTracks);
    const [url, setUrl] = useState("");
+   const { artistInfo, related, topTracks, albums,
+            isLoading, hasError, errorMessage } = useSelector(state => state.artist);
 
    useEffect(() => {
       setUrl(`https://api.spotify.com/v1/artists/${id}`);
@@ -58,6 +58,15 @@ const ArtistPage = () => {
 
    };
 
+   if (isLoading) {
+      return <Loader/>
+   }
+
+   if (hasError) {
+      return <Error errorMessage={ errorMessage } />
+ 
+   }
+
    return (
       <div className='artist'
          style={{ background: `url('${artistInfo?.image}') center 0 / auto 21.25rem no-repeat` ?? "" }}>
@@ -67,7 +76,7 @@ const ArtistPage = () => {
             <div className="artist__subscribers">{`${formattedNum(artistInfo?.followers)} за месяц`}</div>
          </div>
          <ItemList items={topTracks} url={"https://api.spotify.com/v1/me/player/play"} title={"Популярные треки"} />
-         <BoxItems data={artistAlbums} title={"Альбомы"} />
+         <BoxItems data={albums} title={"Альбомы"} />
          {related && related.length > 0 ? <BoxItems data={related} title={"Похожие"}/> : null}
       </div>
    );

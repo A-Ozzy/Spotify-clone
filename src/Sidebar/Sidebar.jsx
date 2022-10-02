@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { fetchUserPlaylists } from '../store/playlistSlice';
+import { fetchFavoriteTracks } from '../store/favoriteSlice';
 import SidebarOption from '../SidebarOption';
+import Error from '../Error';
 import { Link } from "react-router-dom";
-
 import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
-import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import ControlPointDuplicateIcon from '@mui/icons-material/ControlPointDuplicate';
 import StarsIcon from '@mui/icons-material/Stars';
 
@@ -17,12 +17,13 @@ const Sidebar = () => {
 
    const dispatch = useDispatch();
    const token = useSelector(state => state.login.token);
-   const playlist = useSelector(state => state.playlist.playlist);
+   const {playlist, hasError, errorMessage } = useSelector(state => state.playlist);
    const currentCollectionUri = useSelector(state => state.player.playbackState.context_uri);
 
    useEffect(() => {
 
       dispatch(fetchUserPlaylists(token));
+      dispatch(fetchFavoriteTracks(token));
 
    }, [token, dispatch]);
 
@@ -44,11 +45,6 @@ const Sidebar = () => {
                   </NavLink>
                </li>
                <li className="sidebarmenu__link">
-                  <NavLink to="/library">
-                     <SidebarOption Icon={LibraryBooksIcon} text="Your library" />
-                  </NavLink>
-               </li>
-               <li className="sidebarmenu__link">
                   <NavLink to="/create-playlist">
                      <SidebarOption Icon={ControlPointDuplicateIcon} text="Create playlist" />
                   </NavLink>
@@ -61,11 +57,10 @@ const Sidebar = () => {
             </ul>
          </div>
          <div className="sidebar__playlists">
+            {hasError ? <Error errorMessage={ errorMessage } /> : null}
             <ul className="sidebar__playlist">
-               {playlist?.map((item) => {
-                  // console.log(item);
+               {(playlist?.length < 1 && !hasError) ? <li className="sidebar-option">Нет плэйлистов</li> : playlist?.map((item) => {
                   const { name, id, uri } = item;
-
                   return (
                      <li key={id} data-playlist-uri={uri} className={currentCollectionUri === uri ? "playing" : ""}>
                         <Link to={`/playlist/${id}`}>

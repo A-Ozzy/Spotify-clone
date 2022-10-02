@@ -7,7 +7,7 @@ import {
    toggleShuffle,
    toggleRepeat,
 } from '../store/playerSlice';
-import { setPlaybackState, setDeviceId } from '../store/playerSlice';
+import { setPlaybackState, setDeviceId, setPlaybackVolume } from '../store/playerSlice';
 
 import ShuffleIcon from '@mui/icons-material/Shuffle';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
@@ -16,7 +16,6 @@ import RepeatIcon from '@mui/icons-material/Repeat';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutline';
 
-// import axios from 'axios';
 
 import './Player.scss';
 
@@ -25,8 +24,6 @@ function Player() {
    const dispatch = useDispatch();
    const token = useSelector(state => state.login.token);
    const playbackState = useSelector(state => state.player.playbackState);
-   // const resetDevice = useSelector(state => state.player.resetDevice);
-   // const deviceId = useSelector(state => state.player.deviceId);
 
    let fireyPlayer = useRef(null);
 
@@ -44,7 +41,7 @@ function Player() {
 
 
    const InitializePlayer = useCallback(() => {
-      // console.log("initializing firey spotify 👾");
+      console.log("initializing firey spotify 👾");
       let { Player } = window.Spotify;
       fireyPlayer = new Player({
          name: "Firey Spotify🔥",
@@ -101,7 +98,7 @@ function Player() {
          console.log("Device ID has gone offline", device_id);
       });
       // Connect the player!
-      fireyPlayer.connect()
+      fireyPlayer.connect();
    }, []);
 
    const toggleMusic = () => {
@@ -116,49 +113,23 @@ function Player() {
    };
 
    const switchShuffle = (action) => {
-      dispatch(toggleShuffle({ action, token }))
+      dispatch(toggleShuffle({ action, token }));
    };
 
-   // useEffect(() => {
-   //    if (resetDevice) {
-   //       // console.log("device: ", deviceId );
-   //       async function check() {
-   //          const response = await axios({
-   //             method: "GET",
-   //             url: "https://api.spotify.com/v1/me/player/devices",
-   //             headers: {
-   //                Authorization: `Bearer ${token}`,
-   //                'Content-Type': "application/json"
-   //             },
-   //             // data: {
-   //             //    "device_ids": [device_id],
-   //             //    play: false,
-   //             // }
-   //          });
-   //          if (response.status === 200) {
-   //             console.log(response);
-                
-   //          } else {
-   //             console.log(response.status);
-   //          }
-   //       }
-
-   //       check()
-   //       // dispatch(switchDevice({ device_id : deviceId, token }));
-
-   //    }
-   // }, [resetDevice]);
-
-   const switchRepeat = useCallback((value) => {
+   const switchRepeat = (value) => {
       const action = value ? "off" : "track";
       dispatch(toggleRepeat({ action, token }));
-   }, [playbackState.repeat]);
-
+   };
 
 
    useEffect(() => {
       loadScript();
       window.onSpotifyWebPlaybackSDKReady = () => InitializePlayer();
+      
+      setTimeout(() => {
+         dispatch(setPlaybackVolume({ defaultVolume : 20, token }));
+      }, 2500);
+      
       // get current state of the player
       return () => {
          fireyPlayer.disconnect();

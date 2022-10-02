@@ -6,6 +6,7 @@ import Content from '../Content';
 import PlaylistPage from '../PlaylistPage';
 import ArtistPage from '../ArtistPage';
 import AlbumPage from '../AlbumPage';
+import FavoritePage from '../FavoritePage';
 import { Routes, Route } from "react-router-dom";
 import Search from '../Search';
 
@@ -24,12 +25,12 @@ function App() {
                <Route path="/playlist/:id" element={<PlaylistPage />} />
                <Route path="/artist/:id" element={<ArtistPage />} />
                <Route path="/album/:id" element={<AlbumPage />} />
-
                <Route path="/home" element={<Content />} />
                <Route path="/search" element={<Search />} />
                <Route path="/library" element={<Content />} />
                <Route path="/create-playlist" element={<Content />} />
-               <Route path="/favorite-tracks" element={<Content />} />
+               <Route path="/favorite-tracks" element={<FavoritePage />} />
+               
             </Route>
          </Routes>
       </div>

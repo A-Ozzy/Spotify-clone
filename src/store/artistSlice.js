@@ -4,7 +4,7 @@ import axios from 'axios';
 
 export const fetchArtist = createAsyncThunk(
    'artist/fetchArtist',
-   async function ({ url, token, }, { rejectWithValue }) {     
+   async function ({ url, token, }, { rejectWithValue }) {
       try {
          const response = await axios.get(url, {
             headers: {
@@ -14,20 +14,20 @@ export const fetchArtist = createAsyncThunk(
          });
          if (!response.status === 200) {
             console.log('ne ok');
-            
+
          }
-         const data = await response.data;        
+         const data = await response.data;
          return data
 
       } catch (err) {
-         return rejectWithValue(err.response.data.error);
+         return rejectWithValue(err.response.data.error.message);
       };
    }
 );
 
 export const fetchRelatedArtists = createAsyncThunk(
    'artist/fetchRelatedArtists',
-   async function ({ url, token, }, { rejectWithValue }) {     
+   async function ({ url, token, }, { rejectWithValue }) {
       try {
          const response = await axios.get(url, {
             headers: {
@@ -37,9 +37,9 @@ export const fetchRelatedArtists = createAsyncThunk(
          });
          if (!response.status === 200) {
             console.log('ne ok');
-            
+
          }
-         const data = await response.data.artists;        
+         const data = await response.data.artists;
          return data
 
       } catch (err) {
@@ -50,7 +50,7 @@ export const fetchRelatedArtists = createAsyncThunk(
 
 export const fetchTopTracks = createAsyncThunk(
    'artist/fetchTopTracks',
-   async function ({ url, token, }, { rejectWithValue }) {     
+   async function ({ url, token, }, { rejectWithValue }) {
       try {
          const response = await axios.get(url, {
             headers: {
@@ -60,9 +60,9 @@ export const fetchTopTracks = createAsyncThunk(
          });
          if (!response.status === 200) {
             console.log('ne ok');
-            
+
          }
-         const data = await response.data.tracks;  
+         const data = await response.data.tracks;
          return data
 
       } catch (err) {
@@ -73,7 +73,7 @@ export const fetchTopTracks = createAsyncThunk(
 
 export const fetchArtistAlbums = createAsyncThunk(
    'artist/fetchArtistAlbums',
-   async function ({ id, token, }, { rejectWithValue }) {     
+   async function ({ id, token, }, { rejectWithValue }) {
       try {
          const response = await axios.get(
             `https://api.spotify.com/v1/artists/${id}/albums?include_groups=album`, {
@@ -84,9 +84,9 @@ export const fetchArtistAlbums = createAsyncThunk(
          });
          if (!response.status === 200) {
             throw new Error('Error');
-            
+
          }
-         const data = await response.data.items;  
+         const data = await response.data.items;
          return data
 
       } catch (err) {
@@ -98,11 +98,15 @@ export const fetchArtistAlbums = createAsyncThunk(
 const artistSlice = createSlice({
    name: "artist",
    initialState: {
+      isLoading: true,
+      hasError: false,
+      errorMessage: "",
 
    },
    extraReducers: {
       [fetchArtist.fulfilled]: (state, action) => {
-         // console.log(action.payload);
+         state.isLoading = false;
+         state.hasError = false;
          state.artistInfo = {
             name: action.payload.name,
             followers: action.payload.followers.total,
@@ -110,19 +114,19 @@ const artistSlice = createSlice({
             uri: action.payload.uri,
             id: action.payload.id,
          }
-
       },
-      [fetchRelatedArtists.fulfilled]: (state, action) => {
-         // console.log(action.payload);
-         state.related = action.payload;
-
+      [fetchArtist.rejected]: (state, action) => {
+         state.isLoading = false;
+         state.hasError = true;
+         state.errorMessage = action.payload;
       },
       [fetchTopTracks.fulfilled]: (state, action) => {
-
          state.topTracks = action.payload;
       },
+      [fetchRelatedArtists.fulfilled]: (state, action) => {
+         state.related = action.payload;
+      },
       [fetchArtistAlbums.fulfilled]: (state, action) => {
-         // console.log(action.payload);
          state.albums = action.payload;
       },
 

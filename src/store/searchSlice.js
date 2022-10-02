@@ -43,21 +43,16 @@ const searchSlice = createSlice({
    },
    extraReducers: {
       [onSearch.pending]: (state, action) => {
-         // console.log(action.payload);
-
          state.isLoading = true;
          state.hasError = false;
       },
       [onSearch.fulfilled]: (state, action) => {
-         console.log(action.payload);
          state.isLoading = false;
          state.albums = action.payload.albums.items;
          state.artists = action.payload.artists.items;
          state.tracks = action.payload.tracks.items;
       },
       [onSearch.rejected]: (state, action) => {
-         // console.log(action.payload);
-
          state.isLoading = false;
          state.hasError = true;
       },

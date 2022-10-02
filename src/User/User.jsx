@@ -1,6 +1,8 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchFollowedArtists } from '../store/playlistSlice';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Error from "../Error";
 
 
 import './User.scss';
@@ -8,19 +10,20 @@ import './User.scss';
 const User = () => {
 
    const dispatch = useDispatch();
-   const userName = useSelector(state => state.login.userName);
-   const userAvatar = useSelector(state => state.login.userAvatar);
-   const followedArtists = useSelector(state => state.playlist.followedArtists);
-   const playlist = useSelector(state => state.playlist.playlist);
-   const token = useSelector(state => state.login.token);
+   const { userName, userAvatar, token, hasError, errorMessage } = useSelector(state => state.login);
+   const { followedArtists, playlist } = useSelector(state => state.playlist);
 
    useEffect(() => {
 
       dispatch(fetchFollowedArtists(token));
 
-   }, [dispatch]);
+   }, [dispatch, userName]);
 
+   if (hasError) {
+      return <Error errorMessage={ errorMessage } />
+   }
    return (
+
       <div className='user'>
          <div className="user__header">
             <div className="user__nav">
@@ -33,9 +36,10 @@ const User = () => {
             </div>
          </div>
          <div className="user__info">
-            <div className="user__photo">
-               <img src={userAvatar} alt="user photo" />
-            </div>
+            {userAvatar ?
+               <div className="user__photo"><img src={userAvatar} alt="user photo" /></div> :
+               <AccountCircleIcon sx={{ width: 200, height: 200, color: "rgba(108, 122, 137, 0.8)" }} />
+            }
             <div className="user__ditails userditails">
                <div className="userditails__text">профиль</div>
                <div className="userditails__name">{userName}</div>

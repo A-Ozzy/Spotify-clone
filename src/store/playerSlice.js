@@ -74,7 +74,7 @@ export const togglePlay = createAsyncThunk(
          }
 
       } catch (err) {
-         return rejectWithValue(err.response.data.error);
+         return rejectWithValue(err.response.data.error.message);
       };
    }
 );
@@ -209,7 +209,7 @@ const playerSlice = createSlice({
       [togglePlay.fulfilled]: (state, action) => {
       },
       [togglePlay.rejected]: (state, action) => {
-         // console.log(" play rej: ", action.payload);
+         alert(`Rejected: ${action.payload}`)
       },
       [switchDevice.fulfilled]: (state, action) => {
          // console.log("device switced", action.payload);

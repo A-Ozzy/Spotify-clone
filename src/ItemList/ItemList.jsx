@@ -4,6 +4,7 @@ import PlayingIndicator from '../PlayingIndicator';
 import { togglePlay } from '../store/playerSlice';
 import { songDuration } from '../Util';
 import { Link } from 'react-router-dom';
+
 //========================
 import "./ItemList.scss";
 
@@ -13,13 +14,9 @@ const ItemList = ({ items, url, title }) => {
    const currentTrackId = useSelector(state => state.player.playbackState.id);
    const dispatch = useDispatch();
    const token = useSelector(state => state.login.token);
-
-   
-
    const tracksUris = items?.map((it) => it.uri, []);
 
-   const setToPlay = (position) => {
-      
+   const setToPlay = (position) => {  
       const data = {
          "uris": tracksUris,
          "offset": {
@@ -33,7 +30,6 @@ const ItemList = ({ items, url, title }) => {
    const trackList = items?.map((item, i) => {
 
       const { images, name, type, id } = item.album;
-      // console.log(item.album);
 
       return (
          <li className='trackitem' key={item.id}

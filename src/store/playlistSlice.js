@@ -72,29 +72,73 @@ export const fetchTopArtists = createAsyncThunk(
    }
 );
 
+// export const fetchFavoriteTracks = createAsyncThunk(
+//    'playlist/fetchFavoriteTracks',
+//    async function (token, { rejectWithValue }) {      
+//       try {
+//          const response = await axios.get(
+//             'https://api.spotify.com/v1/me/tracks', {
+//             headers: {
+//                Authorization: `Bearer ${token}`,
+//                'Content-Type': "application/json"
+//             }
+//          });
+//          if (!response.status === 200) {
+//             throw new Error('Error');
+//          }
+         
+//          return response.data
+
+//       } catch (err) {
+//          return rejectWithValue(err.message);
+//       };
+//    }
+// );
+
 const playlistSlice = createSlice({
    name: 'playlist',
    initialState: {
+      isLoading: false,
+      hasError: false,
+      errorMessage: "",
       playlist: [],
       followedArtists: [],
       currentlyPlayingTrack: {},
-      topArtists: [],
+      // favoriteTracks: [],
+      // favoriteTracksError: false,
+      // favoriteTracksErrorMessage: "",
    },
    redusers: {
-      fetchPlaylist(state, action) {
-         state.playlist = action.payload;
-      }
    },
    extraReducers: {
       [fetchUserPlaylists.fulfilled]: (state, action) => {
          state.playlist = action.payload;
       },
+      [fetchUserPlaylists.rejected]: (state, action) => {
+         state.hasError = true;
+         state.errorMessage = action.payload;
+      },
       [fetchFollowedArtists.fulfilled]: (state, action) => {
          state.followedArtists = action.payload;
+      },
+      [fetchFollowedArtists.rejected]: (action) => {
+         console.log(action.payload);
       },
       [fetchTopArtists.fulfilled]: (state, action) => {  
          state.topArtists = action.payload;
       },
+      [fetchTopArtists.rejected]: (state, action) => {           
+         state.topArtistsError = true;
+         state.topArtistsErrorMessage = action.payload;
+      },
+      // [fetchFavoriteTracks.fulfilled]: (state, action) => {
+      //    state.favoriteTracks = action.payload;
+      //    state.favoriteTracksError = false;
+      // },
+      // [fetchFavoriteTracks.rejected]: (state, action) => { 
+      //    state.favoriteTracksError = true;
+      //    state.favoriteTracksErrorMessage = action.payload;
+      // },
    },
 });
 

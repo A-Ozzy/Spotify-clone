@@ -31,7 +31,7 @@
       padding: 2rem;
       display: grid;
       grid-template-columns: minmax(200px, 30%) 80%;
-      align-items: end;
+      align-items: flex-end;
       column-gap: 1.5rem;
    }
    &__cover {

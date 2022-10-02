@@ -14,8 +14,7 @@ function Footer() {
 
    const dispatch = useDispatch();
    const token = useSelector(state => state.login.token);
-   const playbackState = useSelector(state => state.player.playbackState);
-   const deviceId = useSelector(state => state.player.deviceId);
+   const {playbackState, deviceId} = useSelector(state => state.player);
    const songnameRef = useRef();
    const writerRef = useRef();
    const [songnameWidth, setSongnameWidth] = useState(0);
@@ -31,7 +30,7 @@ function Footer() {
    const debouncedVolume = useCallback(
       debounce((defaultVolume) => {
          dispatch(setPlaybackVolume({ defaultVolume, token }));
-      }, 500), []
+      }, 400), []
    );
 
 

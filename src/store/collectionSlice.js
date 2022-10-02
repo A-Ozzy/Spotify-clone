@@ -45,7 +45,7 @@ export const fetchCollectionTracks = createAsyncThunk(
          return response.data
 
       } catch (err) {
-         return rejectWithValue(err);
+         return rejectWithValue(err.message);
       };
    }
 );
@@ -54,6 +54,9 @@ export const fetchCollectionTracks = createAsyncThunk(
 const collectionSlice = createSlice({
    name: "collection",
    initialState: {
+      isLoading: true,
+      hasError: false,
+      errorMessage: "",
       name: "",
       image: "",
       description: "",
@@ -65,8 +68,8 @@ const collectionSlice = createSlice({
    },
    extraReducers: {
       [fetchCollectionTracks.fulfilled]: (state, action) => {
-         // console.log(action.payload);
-         
+         state.isLoading = false;
+         state.hasError = false;
          state.name = action.payload.name;
          state.image = action.payload.images[0].url;
          state.totalAmount = action.payload.tracks.total;
@@ -75,7 +78,10 @@ const collectionSlice = createSlice({
             
       },
       [fetchCollectionTracks.rejected]: (state, action) => {
-         console.log(action.payload);
+         // console.log(action.payload);
+         state.isLoading = false;
+         state.hasError = true;
+         state.errorMessage = action.payload;
       },
       
    },
