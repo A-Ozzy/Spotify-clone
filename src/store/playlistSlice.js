@@ -72,28 +72,6 @@ export const fetchTopArtists = createAsyncThunk(
    }
 );
 
-// export const fetchFavoriteTracks = createAsyncThunk(
-//    'playlist/fetchFavoriteTracks',
-//    async function (token, { rejectWithValue }) {      
-//       try {
-//          const response = await axios.get(
-//             'https://api.spotify.com/v1/me/tracks', {
-//             headers: {
-//                Authorization: `Bearer ${token}`,
-//                'Content-Type': "application/json"
-//             }
-//          });
-//          if (!response.status === 200) {
-//             throw new Error('Error');
-//          }
-         
-//          return response.data
-
-//       } catch (err) {
-//          return rejectWithValue(err.message);
-//       };
-//    }
-// );
 
 const playlistSlice = createSlice({
    name: 'playlist',
@@ -104,9 +82,6 @@ const playlistSlice = createSlice({
       playlist: [],
       followedArtists: [],
       currentlyPlayingTrack: {},
-      // favoriteTracks: [],
-      // favoriteTracksError: false,
-      // favoriteTracksErrorMessage: "",
    },
    redusers: {
    },
@@ -131,14 +106,6 @@ const playlistSlice = createSlice({
          state.topArtistsError = true;
          state.topArtistsErrorMessage = action.payload;
       },
-      // [fetchFavoriteTracks.fulfilled]: (state, action) => {
-      //    state.favoriteTracks = action.payload;
-      //    state.favoriteTracksError = false;
-      // },
-      // [fetchFavoriteTracks.rejected]: (state, action) => { 
-      //    state.favoriteTracksError = true;
-      //    state.favoriteTracksErrorMessage = action.payload;
-      // },
    },
 });
 

@@ -39,9 +39,7 @@ const AlbumPage = () => {
    };
 
    const totalDuration = useMemo(() => {
-      return tracks?.reduce((acc, cur) => {
-         return acc + cur.duration_ms;
-      }, 0);
+      return tracks?.reduce((acc, cur) => acc + cur.duration_ms, 0);
    }, [tracks]);
 
    const albumItems = tracks?.map((val, i) => {

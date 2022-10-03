@@ -14,8 +14,7 @@ function BoxItems({ data, title, subTitile, hasError, errorMessage }) {
          <div className="boxitems__title">{title}</div>
          <div className="boxitems__subtitle">{subTitile ?? ""}</div>
          <div className="boxitems__collection">
-            {hasError ? <Error errorMessage={errorMessage} /> : null}
-            {!hasError ? items : null}
+            {hasError ? <Error errorMessage={errorMessage} /> : items}
          </div>
       </div>
    );
